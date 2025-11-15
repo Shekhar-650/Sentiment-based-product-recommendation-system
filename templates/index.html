@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ebuss — Sentiment-Aware Recommendations</title>
+
+    <!-- Bootstrap for quick, pleasant UI (no build step required) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      body { background:#f7f9fc; }
+      .card-reco { min-height: 120px; }
+      .loader { display:none; }
+      .product-img { width:72px; height:72px; object-fit:cover; border-radius:6px; }
+      .empty { color:#6c757d }
+    </style>
+  </head>
+  <body>
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h3 class="card-title mb-3">Ebuss — Sentiment-based Product Recommendations</h3>
+              <p class="text-muted">Enter an existing username (from the dataset) and press <strong>Get Recommendations</strong>. The system will show 5 products recommended for that user after filtering by sentiment.</p>
+
+              <form action="/" method="POST" class="row g-2 align-items-center">
+                <div class="col-sm-9">
+                  <input id="username" name="username" class="form-control" placeholder="Type username" required>
+                </div>
+                <div class="col-sm-3 d-grid">
+                  <button id="submit-btn" class="btn btn-primary" type="submit">Get Recommendations</button>
+                </div>
+              </form>
+
+              <div class="mt-4">
+                {% if error %}
+              <div class="alert alert-danger mt-3">{{ error }}</div>
+              {% endif %}
+
+              {% if recommendations %}
+              <h5 class="mt-4">Top Recommendations:</h5>
+              <ul class="list-group mt-2">
+                {% for item in recommendations %}
+                <li class="list-group-item">{{ item }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+                  <div id="status-text" class="empty">No recommendations yet — enter a username and submit.</div>
+                </div>
+              </div>
+
+              <hr />
+
+              <div id="results" class="row g-3">
+                <!-- Recommendation cards will be inserted here -->
+              </div>
+
+            </div>
+          </div>
+
+          <div class="text-center mt-3 text-muted small">Make sure this file is served by your Flask app as <code>/</code> (e.g. render_template('index.html')). The frontend expects a JSON endpoint at <code>/predict</code> or <code>/recommend</code> that accepts a POST with <code>{"username":"..."}</code> and returns an array of recommended items.</div>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
